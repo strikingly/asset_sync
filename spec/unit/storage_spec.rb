@@ -86,7 +86,7 @@ describe AssetSync::Storage do
     it 'should correctly set expire date' do
       local_files = ['file1.jpg', 'file1-1234567890abcdef1234567890abcdef.jpg']
       local_files += ['dir1/dir2/file2.jpg', 'dir1/dir2/file2-1234567890abcdef1234567890abcdef.jpg']
-      local_files += ['2.bundle-c06e4f5436310c975229.js']
+      local_files += ['2.c06e4f5436310c975229-bundle.js']
       remote_files = []
       storage = AssetSync::Storage.new(@config)
       allow(storage).to receive(:local_files).and_return(local_files)
@@ -100,7 +100,7 @@ describe AssetSync::Storage do
               'dir1/dir2/file2.jpg'
           !expect(file).not_to include(:cache_control, :expires)
         when 'file1-1234567890abcdef1234567890abcdef.jpg',
-              '2.bundle-c06e4f5436310c975229.js',
+              '2.c06e4f5436310c975229-bundle.js',
               'dir1/dir2/file2-1234567890abcdef1234567890abcdef.jpg'
           expect(file).to include(:cache_control, :expires)
         else

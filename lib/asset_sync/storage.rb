@@ -138,7 +138,7 @@ module AssetSync
 
       filename = File.basename(f,File.extname(f))
       if /-[0-9a-fA-F]{32}$/.match(filename) || # rails generated hash
-        /-[0-9a-fA-F]{20}$/.match(filename) # webpack generated hash
+        /^[0-9]+\.[0-9a-fA-F]{20}/.match(filename) # webpack generated chunk hash
         file.merge!({
           :cache_control => "public, max-age=#{one_year}",
           :expires => CGI.rfc1123_date(Time.now + one_year)
