@@ -23,6 +23,7 @@ module AssetSync
     attr_accessor :run_on_precompile
     attr_accessor :invalidate
     attr_accessor :cdn_distribution_id
+    attr_accessor :sync_all
 
     # FOG configuration
     attr_accessor :fog_provider          # Currently Supported ['AWS', 'Rackspace']
@@ -65,6 +66,7 @@ module AssetSync
       self.run_on_precompile = true
       self.cdn_distribution_id = nil
       self.invalidate = []
+      self.sync_all = false
       load_yml! if defined?(::Rails) && yml_exists?
     end
 
@@ -128,7 +130,12 @@ module AssetSync
 
     def assets_prefix
       # Fix for Issue #38 when Rails.config.assets.prefix starts with a slash
-      self.prefix || ::Rails.application.config.assets.prefix.sub(/^\//, '')
+      # Add sync_all flag to able sync all files under public
+      if self.sync_all
+        return ''
+      else
+        self.prefix || ::Rails.application.config.assets.prefix.sub(/^\//, '')
+      end
     end
 
     def public_path
@@ -174,8 +181,8 @@ module AssetSync
       self.fog_region             = yml["region"] if yml.has_key?("region")
 
       self.public_path            = yml["public_path"] if yml.has_key?("public_path")
+      self.sync_all               = yml["sync_all"] if yml.has_key?("sync_all")
     end
-
 
     def fog_options
       options = { :provider => fog_provider }

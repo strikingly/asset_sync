@@ -36,6 +36,7 @@ module AssetSync
         end
 
         config.prefix = ENV['ASSET_SYNC_PREFIX'] if ENV.has_key?('ASSET_SYNC_PREFIX')
+        config.sync_all = (ENV['ASSET_SYNC_ALL'] == 'true') if ENV.has_key?('ASSET_SYNC_ALL')
 
         config.existing_remote_files = ENV['ASSET_SYNC_EXISTING_REMOTE_FILES'] || "keep"
 
