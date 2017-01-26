@@ -126,13 +126,10 @@ module AssetSync
 
       uncompressed_filename = f.sub(/\.gz\z/, '')
       basename = File.basename(uncompressed_filename, File.extname(uncompressed_filename))
-      if /-[0-9a-fA-F]{32}$/.match(basename) || # rails generated hash
-         /^[0-9]+\.[0-9a-fA-F]{20}/.match(basename) # webpack generated chunk hash
-        file.merge!({
-          :cache_control => "public, max-age=#{one_year}",
-          :expires => CGI.rfc1123_date(Time.now + one_year)
-        })
-      end
+      file.merge!({
+        :cache_control => "public, max-age=#{one_year}",
+        :expires => CGI.rfc1123_date(Time.now + one_year)
+      })
 
       # overwrite headers if applicable, you probably shouldn't specific key/body, but cache-control headers etc.
 
